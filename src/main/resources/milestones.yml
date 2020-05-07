@@ -1,0 +1,34 @@
+# Global Fund milestone configuration
+#
+# Version: ${project.version}
+
+milestone-one:
+  display: '&6The First Milestone'
+  # Reset and repeat when reached?
+  repeat: false
+  requirements:
+    money: 10000
+    tokens: 100
+  rewards:
+    commands:
+      - 'broadcast We have reached our fist global fund milestone! You all get a diamond!'
+      - 'msg %player% And you are the last donator!'
+      # When a line contains the %loopPlayer% placeholder, it runs for every player online.
+      - 'give %loopPlayer% diamond 1'
+      # Want to switch to another milestone when this one is reached?
+      - 'globalfund setactive milestone-two'
+    # tokens: 1
+    # money: 10
+    # broadcast:
+    #  - ''
+    # inform:
+    #  - ''
+milestone-two:
+  display: '&eThe Second Milestone'
+  repeat: false
+  requirements:
+    money: 50000
+    tokens: 200
+  rewards:
+    broadcast:
+      - '&7We have reached our second global fund milestone! You get nothing, but you are great!'

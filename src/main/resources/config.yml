@@ -1,0 +1,19 @@
+# Configuration for ${project.name}
+#
+# Version: ${project.version}
+
+debug-enabled: true
+plugin-prefix: '&6Global Fund &8>> '
+
+# There will always be a data file to store the currently active milestone, as it's a lot easier to store in a yaml.
+storage:
+  # mongo/file
+  type: file
+  mongo:
+    host: localhost
+    port: 27017
+    database: 'globalfund'
+    use-credentials: true
+    user: 'admin'
+    pass: 'admin'
+    auth-db: 'admin'

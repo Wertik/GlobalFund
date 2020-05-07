@@ -1,0 +1,12 @@
+name: GlobalFund
+main: space.devport.globalfund.GlobalFundPlugin
+author: Wertik1206
+version: ${project.version}
+softdepend: [PlaceholderAPI, Vault, TokenManager]
+commands:
+  globalfund:
+    aliases: [gf, fund, globalf, gfund]
+    description: Main plugin command.
+permissions:
+  globalfund.commands:
+    description: Allows commands
