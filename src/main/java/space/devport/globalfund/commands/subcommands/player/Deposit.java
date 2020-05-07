@@ -1,5 +1,6 @@
 package space.devport.globalfund.commands.subcommands.player;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import space.devport.utils.commands.SubCommand;
 import space.devport.utils.commands.struct.ArgumentRange;
 import space.devport.utils.commands.struct.CommandResult;
 import space.devport.utils.commands.struct.Preconditions;
+import space.devport.utils.text.message.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +51,18 @@ public class Deposit extends SubCommand {
         if (!plugin.getMilestoneManager().deposit((Player) sender, currencyType, amount)) {
             language.sendPrefixed(sender, "Deposit.Could-Not");
             return CommandResult.FAILURE;
+        }
+
+        Message broadcast = language.getPrefixed("Broadcasts.Deposit")
+                .replace("%player%", sender.getName())
+                .replace("%type%", currencyType.getName())
+                .replace("%amount%", amount)
+                .replace("%actual%", plugin.getMilestoneManager().getActiveData().getCurrencyAmount(currencyType))
+                .replace("%goal%", plugin.getMilestoneManager().getActivePreset().getRequirements().get(currencyType))
+                .replace("%remaining%", plugin.getMilestoneManager().getRemaining(currencyType));
+
+        for (Player loopPlayer : Bukkit.getOnlinePlayers()) {
+            broadcast.send(loopPlayer);
         }
 
         language.getPrefixed("Deposit.Done")

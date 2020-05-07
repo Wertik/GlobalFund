@@ -42,5 +42,7 @@ public class GlobalFundLanguage extends LanguageDefaults {
         addDefault("Placeholders.Invalid-Amount-Type", "&cInvalid amount type");
         addDefault("Placeholders.Zero", "&c0");
         addDefault("Number-Format", "#.##");
+
+        addDefault("Broadcasts.Deposit", "&5>> &f%player% &7deposited &r%amount% &r%type% &7to the global fund! &f%actual%&7/&e%goal% &7( &f%remaining% &7)");
     }
 }
