@@ -21,8 +21,6 @@ public class GlobalFundExpansion extends PlaceholderExpansion {
         this.language = plugin.getLanguageManager();
     }
 
-    // TODO: Default values to language.
-
     /*
      * %globalfund_display%
      * %globalfund_<money/tokens>_<actual/remaining/goal>%
