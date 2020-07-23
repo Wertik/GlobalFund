@@ -31,13 +31,11 @@ public class GlobalFundExpansion extends PlaceholderExpansion {
 
         if (params.equalsIgnoreCase("display")) {
             MilestonePreset activePreset = plugin.getMilestoneManager().getActivePreset();
-
             if (activePreset == null) return language.get("Placeholders.None-Active").color().toString();
             return StringUtil.color(activePreset.getDisplayName());
         } else if (params.equalsIgnoreCase("completed")) {
             MilestoneData data = plugin.getMilestoneManager().getActiveData();
             if (data == null) return language.get("Placeholders.None-Active").color().toString();
-
             return String.valueOf(data.isCompleted());
         } else {
             if (!params.contains("_"))
@@ -60,6 +58,9 @@ public class GlobalFundExpansion extends PlaceholderExpansion {
                     break;
                 case "goal":
                     value = plugin.getMilestoneManager().getActivePreset().getRequirements().get(type);
+                    break;
+                case "required":
+                    return String.valueOf(plugin.getMilestoneManager().requiresCurrency(type));
             }
 
             if (value == -1) return language.get("Placeholders.Invalid-Amount-Type").color().toString();

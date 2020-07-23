@@ -196,4 +196,8 @@ public class MilestoneManager {
     public MilestoneData getActiveData() {
         return getData(activeMilestone);
     }
+
+    public boolean requiresCurrency(CurrencyType type) {
+        return getActiveData().getCurrencyAmount(type) < getActivePreset().getRequirements().get(type);
+    }
 }
