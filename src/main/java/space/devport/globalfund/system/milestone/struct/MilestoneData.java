@@ -8,7 +8,7 @@ import space.devport.globalfund.system.struct.CurrencyStorage;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(noClassnameStored = true, value = "MilestoneData")
+@Entity(noClassnameStored = true, value = "Milestone Data")
 public class MilestoneData {
 
     @Id

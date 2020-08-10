@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
-@Entity(noClassnameStored = true, value = "PlayerRecord")
+@Entity(noClassnameStored = true, value = "Player Records")
 public class PlayerRecord {
 
     @Id
