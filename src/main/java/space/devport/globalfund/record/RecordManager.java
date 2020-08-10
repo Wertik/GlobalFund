@@ -1,6 +1,7 @@
 package space.devport.globalfund.record;
 
 import lombok.Setter;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -29,7 +30,12 @@ public class RecordManager {
 
     public void saveData() {
         if (storage == null) return;
-        storage.saveAllRecords(records);
+        try {
+            storage.saveAllRecords(records);
+        } catch (NotImplementedException e) {
+            if (plugin.getConsoleOutput().isDebug())
+                e.printStackTrace();
+        }
     }
 
     public void loadData() {

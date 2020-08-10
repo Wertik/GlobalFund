@@ -101,7 +101,9 @@ public class GlobalFundPlugin extends DevportPlugin {
 
         milestoneManager.saveData();
         recordManager.saveData();
+
         initStorage();
+
         recordManager.saveData();
         milestoneManager.saveData();
 

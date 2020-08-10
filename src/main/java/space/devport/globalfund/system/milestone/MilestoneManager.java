@@ -2,6 +2,7 @@ package space.devport.globalfund.system.milestone;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -92,7 +93,13 @@ public class MilestoneManager {
 
     public void saveData() {
         if (storage == null) return;
-        storage.saveAll(milestoneData);
+
+        try {
+            storage.saveAll(milestoneData);
+        } catch (NotImplementedException e) {
+            if (plugin.getConsoleOutput().isDebug())
+                e.printStackTrace();
+        }
 
         Configuration data = new Configuration(plugin, "data");
         data.getFileConfiguration().set("active-milestone", activeMilestone);
