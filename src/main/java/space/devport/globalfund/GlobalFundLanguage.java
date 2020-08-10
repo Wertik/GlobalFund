@@ -25,6 +25,7 @@ public class GlobalFundLanguage extends LanguageDefaults {
         addDefault("Donated.Record-Header", "&8- &f%milestoneName% %activeOrNot%");
         addDefault("Donated.Record-Currency-Line", "&8 - &f%currencyName% &e%donatedAmount%");
         addDefault("Donated.Footer", "&8&m        ");
+        addDefault("Donated.No-History", "&cNo history yet.");
         addDefault("Donated.Placeholders.Active", "&7( &6Active &7)");
         addDefault("Donated.Placeholders.Not-Active", "");
 

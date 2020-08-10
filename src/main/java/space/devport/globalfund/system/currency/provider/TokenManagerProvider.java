@@ -3,9 +3,16 @@ package space.devport.globalfund.system.currency.provider;
 import lombok.NoArgsConstructor;
 import me.realized.tokenmanager.TokenManagerPlugin;
 import org.bukkit.entity.Player;
+import space.devport.globalfund.GlobalFundPlugin;
 
 @NoArgsConstructor
 public class TokenManagerProvider implements CurrencyProvider {
+
+    @Override
+    public void onLoad() {
+        if (GlobalFundPlugin.getInstance().getServer().getPluginManager().getPlugin("TokenManager") != null)
+            GlobalFundPlugin.getInstance().getConsoleOutput().info("TokenManager registered as a Currency provider!");
+    }
 
     @Override
     public boolean withdraw(Player player, double amount) {

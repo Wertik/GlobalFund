@@ -33,23 +33,27 @@ public class Donated extends SubCommand {
 
         Message header = language.get("Donated.Header");
 
-        String active = language.get("Donated.Placeholders.Active").color().toString();
-        String notActive = language.get("Donated.Placeholders.Not-Active").color().toString();
+        if (record.getDonated().isEmpty()) {
+            header.append(language.get("Donated.No-History"));
+        } else {
+            String active = language.get("Donated.Placeholders.Active").color().toString();
+            String notActive = language.get("Donated.Placeholders.Not-Active").color().toString();
 
-        for (Map.Entry<String, CurrencyStorage> currencyStorage : record.getDonated().entrySet()) {
-            Message recordHeader = language.get("Donated.Record-Header")
-                    .replace("%milestoneName%", currencyStorage.getValue())
-                    .replace("%activeOrNot%", GlobalFundPlugin.getInstance().getMilestoneManager().getActiveMilestone().equals(currencyStorage.getKey()) ?
-                            active : notActive);
+            for (Map.Entry<String, CurrencyStorage> currencyStorage : record.getDonated().entrySet()) {
+                Message recordHeader = language.get("Donated.Record-Header")
+                        .replace("%milestoneName%", currencyStorage.getKey())
+                        .replace("%activeOrNot%", GlobalFundPlugin.getInstance().getMilestoneManager().getActiveMilestone().equals(currencyStorage.getKey()) ?
+                                active : notActive);
 
-            for (Map.Entry<CurrencyType, Double> currency : currencyStorage.getValue().getAmounts().entrySet()) {
-                Message currencyLine = language.get("Donated.Record-Currency-Line")
-                        .replace("%currencyName%", currency.getKey().getName())
-                        .replace("%donatedAmount%", currency.getValue());
-                recordHeader.append(currencyLine);
+                for (Map.Entry<CurrencyType, Double> currency : currencyStorage.getValue().getAmounts().entrySet()) {
+                    Message currencyLine = language.get("Donated.Record-Currency-Line")
+                            .replace("%currencyName%", currency.getKey().getName())
+                            .replace("%donatedAmount%", currency.getValue());
+                    recordHeader.append(currencyLine);
+                }
+
+                header.append(recordHeader);
             }
-
-            header.append(recordHeader);
         }
 
         Message footer = language.get("Donated.Footer");

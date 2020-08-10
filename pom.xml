@@ -40,7 +40,7 @@
                     <relocations>
                         <relocation>
                             <pattern>space.devport.utils</pattern>
-                            <shadedPattern>space.devport.globalfund.utils</shadedPattern>
+                            <shadedPattern>${project.groupId}.utils</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

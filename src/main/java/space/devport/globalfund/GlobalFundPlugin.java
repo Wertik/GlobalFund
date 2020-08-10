@@ -1,12 +1,14 @@
 package space.devport.globalfund;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import space.devport.globalfund.commands.GlobalFundCommand;
 import space.devport.globalfund.commands.subcommands.admin.*;
 import space.devport.globalfund.commands.subcommands.player.Deposit;
 import space.devport.globalfund.commands.subcommands.player.Donated;
 import space.devport.globalfund.commands.subcommands.player.Status;
 import space.devport.globalfund.record.RecordManager;
+import space.devport.globalfund.system.currency.CurrencyType;
 import space.devport.globalfund.system.milestone.MilestoneManager;
 import space.devport.globalfund.system.storage.FileStorage;
 import space.devport.globalfund.system.storage.MongoStorage;
@@ -57,6 +59,13 @@ public class GlobalFundPlugin extends DevportPlugin {
                 .addSubCommand(new Remove())
                 .addSubCommand(new Status())
                 .addSubCommand(new Donated());
+
+        // Check Currency providers after everything is loaded.
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            consoleOutput.debug("Looking for deps..");
+            for (CurrencyType type : CurrencyType.values())
+                type.getProvider().onLoad();
+        }, 1L);
     }
 
     private void initStorage() {

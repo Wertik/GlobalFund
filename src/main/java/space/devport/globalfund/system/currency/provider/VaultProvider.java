@@ -7,17 +7,16 @@ import space.devport.globalfund.GlobalFundPlugin;
 
 public class VaultProvider implements CurrencyProvider {
 
+    private static Economy economy = null;
+
     private final GlobalFundPlugin plugin;
 
     public VaultProvider() {
         this.plugin = GlobalFundPlugin.getInstance();
-
-        setupEconomy();
     }
 
-    private static Economy economy = null;
-
-    private void setupEconomy() {
+    @Override
+    public void onLoad() {
         if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
             return;
         }
@@ -29,6 +28,7 @@ public class VaultProvider implements CurrencyProvider {
         }
 
         economy = rsp.getProvider();
+        GlobalFundPlugin.getInstance().getConsoleOutput().info("Vault registered as a Currency provider!");
     }
 
     @Override

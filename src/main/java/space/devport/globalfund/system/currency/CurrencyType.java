@@ -2,7 +2,6 @@ package space.devport.globalfund.system.currency;
 
 import com.google.common.base.Strings;
 import lombok.Getter;
-import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.system.currency.provider.CurrencyProvider;
@@ -10,16 +9,15 @@ import space.devport.globalfund.system.currency.provider.TokenManagerProvider;
 import space.devport.globalfund.system.currency.provider.VaultProvider;
 
 public enum CurrencyType {
-    MONEY,
-    TOKENS;
+
+    MONEY(new VaultProvider()),
+    TOKENS(new TokenManagerProvider());
 
     @Getter
-    @Setter
-    private CurrencyProvider provider;
+    private final CurrencyProvider provider;
 
-    static {
-        MONEY.setProvider(new VaultProvider());
-        TOKENS.setProvider(new TokenManagerProvider());
+    CurrencyType(CurrencyProvider provider) {
+        this.provider = provider;
     }
 
     @Nullable
@@ -32,6 +30,10 @@ public enum CurrencyType {
             return null;
         }
         return type;
+    }
+
+    public boolean hasProvider() {
+        return provider != null;
     }
 
     public String getName() {
