@@ -3,8 +3,8 @@ package space.devport.globalfund;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import space.devport.globalfund.system.currency.CurrencyType;
-import space.devport.globalfund.system.struct.MilestoneData;
-import space.devport.globalfund.system.struct.MilestonePreset;
+import space.devport.globalfund.system.milestone.struct.MilestoneData;
+import space.devport.globalfund.system.milestone.struct.MilestonePreset;
 import space.devport.utils.text.StringUtil;
 import space.devport.utils.text.language.LanguageManager;
 
@@ -23,17 +23,19 @@ public class GlobalFundExpansion extends PlaceholderExpansion {
 
     /*
      * %globalfund_display%
-     * %globalfund_<money/tokens>_<actual/remaining/goal>%
+     * %globalfund_<money/tokens>_<actual/remaining/goal/donated>%
      * */
 
     @Override
     public String onPlaceholderRequest(Player p, String params) {
 
         if (params.equalsIgnoreCase("display")) {
+
             MilestonePreset activePreset = plugin.getMilestoneManager().getActivePreset();
             if (activePreset == null) return language.get("Placeholders.None-Active").color().toString();
             return StringUtil.color(activePreset.getDisplayName());
         } else if (params.equalsIgnoreCase("completed")) {
+
             MilestoneData data = plugin.getMilestoneManager().getActiveData();
             if (data == null) return language.get("Placeholders.None-Active").color().toString();
             return String.valueOf(data.isCompleted());
@@ -58,6 +60,9 @@ public class GlobalFundExpansion extends PlaceholderExpansion {
                     break;
                 case "goal":
                     value = plugin.getMilestoneManager().getActivePreset().getRequirements().get(type);
+                    break;
+                case "donated":
+                    value = plugin.getRecordManager().getRecord(p).getDonated(plugin.getMilestoneManager().getActiveMilestone(), type);
                     break;
                 case "required":
                     return String.valueOf(plugin.getMilestoneManager().requiresCurrency(type));

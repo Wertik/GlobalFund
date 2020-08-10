@@ -21,6 +21,13 @@ public class GlobalFundLanguage extends LanguageDefaults {
         addDefault("Deposit.Could-Not", "&cCould not deposit to the fund. Something unexpected went wrong.");
         addDefault("Deposit.Done", "&7Deposited &r%amount% %type% &7to the global fund.");
 
+        addDefault("Donated.Header", "&8&m    &f Donate History &8&m    ");
+        addDefault("Donated.Record-Header", "&8- &f%milestoneName% %activeOrNot%");
+        addDefault("Donated.Record-Currency-Line", "&8 - &f%currencyName% &e%donatedAmount%");
+        addDefault("Donated.Footer", "&8&m        ");
+        addDefault("Donated.Placeholders.Active", "&7( &6Active &7)");
+        addDefault("Donated.Placeholders.Not-Active", "");
+
         addDefault("Added", "&7Added &r%amount% %type% &7to the global fund.");
         addDefault("Removed", "&7Removed &r%amount% %type% &7from the global fund.");
         addDefault("Reset", "&7Reset was successful.");

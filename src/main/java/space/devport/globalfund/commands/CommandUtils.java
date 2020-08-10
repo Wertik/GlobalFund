@@ -4,8 +4,8 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.command.CommandSender;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.system.currency.CurrencyType;
-import space.devport.globalfund.system.struct.MilestoneData;
-import space.devport.globalfund.system.struct.MilestonePreset;
+import space.devport.globalfund.system.milestone.struct.MilestoneData;
+import space.devport.globalfund.system.milestone.struct.MilestonePreset;
 
 @UtilityClass
 public class CommandUtils {

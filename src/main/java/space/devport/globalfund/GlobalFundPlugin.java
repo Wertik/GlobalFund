@@ -4,8 +4,10 @@ import lombok.Getter;
 import space.devport.globalfund.commands.GlobalFundCommand;
 import space.devport.globalfund.commands.subcommands.admin.*;
 import space.devport.globalfund.commands.subcommands.player.Deposit;
+import space.devport.globalfund.commands.subcommands.player.Donated;
 import space.devport.globalfund.commands.subcommands.player.Status;
-import space.devport.globalfund.system.MilestoneManager;
+import space.devport.globalfund.record.RecordManager;
+import space.devport.globalfund.system.milestone.MilestoneManager;
 import space.devport.globalfund.system.storage.FileStorage;
 import space.devport.globalfund.system.storage.MongoStorage;
 import space.devport.utils.DevportPlugin;
@@ -18,6 +20,9 @@ public class GlobalFundPlugin extends DevportPlugin {
 
     @Getter
     private MilestoneManager milestoneManager;
+
+    @Getter
+    private RecordManager recordManager;
 
     @Getter
     private Configuration data;
@@ -34,8 +39,11 @@ public class GlobalFundPlugin extends DevportPlugin {
         milestoneManager = new MilestoneManager();
         milestoneManager.loadPresets();
 
+        recordManager = new RecordManager();
+
         initStorage();
         milestoneManager.loadData();
+        recordManager.loadData();
 
         setupPlaceholderAPI();
 
@@ -47,7 +55,8 @@ public class GlobalFundPlugin extends DevportPlugin {
                 .addSubCommand(new Reset())
                 .addSubCommand(new SetActive())
                 .addSubCommand(new Remove())
-                .addSubCommand(new Status());
+                .addSubCommand(new Status())
+                .addSubCommand(new Donated());
     }
 
     private void initStorage() {
@@ -57,11 +66,15 @@ public class GlobalFundPlugin extends DevportPlugin {
             case "mongo":
                 MongoStorage mongoStorage = new MongoStorage();
                 mongoStorage.init();
+
                 milestoneManager.setStorage(mongoStorage);
+                recordManager.setStorage(mongoStorage);
                 break;
             case "file":
                 FileStorage fileStorage = new FileStorage();
+
                 milestoneManager.setStorage(fileStorage);
+                recordManager.setStorage(fileStorage);
                 break;
         }
         consoleOutput.info("Using " + type + " storage.");
@@ -78,7 +91,9 @@ public class GlobalFundPlugin extends DevportPlugin {
         milestoneManager.loadPresets();
 
         milestoneManager.saveData();
+        recordManager.saveData();
         initStorage();
+        recordManager.saveData();
         milestoneManager.saveData();
 
         setupPlaceholderAPI();

@@ -1,4 +1,4 @@
-package space.devport.globalfund.system.struct;
+package space.devport.globalfund.system.milestone.struct;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -9,19 +9,22 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import space.devport.globalfund.GlobalFundPlugin;
-import space.devport.globalfund.system.storage.dao.MilestoneDataDAO;
-import space.devport.globalfund.system.struct.MilestoneData;
+import space.devport.globalfund.record.storage.RecordStorage;
+import space.devport.globalfund.record.storage.dao.PlayerRecordDAO;
+import space.devport.globalfund.record.struct.PlayerRecord;
+import space.devport.globalfund.system.milestone.storage.MilestoneStorage;
+import space.devport.globalfund.system.milestone.storage.dao.MilestoneDataDAO;
+import space.devport.globalfund.system.milestone.struct.MilestoneData;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
-public class MongoStorage implements MilestoneStorage {
+public class MongoStorage implements MilestoneStorage, RecordStorage {
 
     private final GlobalFundPlugin plugin;
 
     private MilestoneDataDAO milestoneDataDAO;
+
+    private PlayerRecordDAO playerRecordDAO;
 
     public MongoStorage() {
         this.plugin = GlobalFundPlugin.getInstance();
@@ -48,6 +51,7 @@ public class MongoStorage implements MilestoneStorage {
         dataStore.ensureIndexes();
 
         milestoneDataDAO = new MilestoneDataDAO(MilestoneData.class, dataStore);
+        playerRecordDAO = new PlayerRecordDAO(PlayerRecord.class, dataStore);
     }
 
     @Override
@@ -55,15 +59,9 @@ public class MongoStorage implements MilestoneStorage {
         Query<MilestoneData> query = milestoneDataDAO.createQuery().field("name").equal(name);
         milestoneDataDAO.deleteByQuery(query);
     }
-
     @Override
     public void clear() {
         milestoneDataDAO.getCollection().drop();
-    }
-
-    @Override
-    public @Nullable MilestoneData load(@Nullable String name) {
-        return milestoneDataDAO.findOne("name", name);
     }
 
     @Override
@@ -84,5 +82,36 @@ public class MongoStorage implements MilestoneStorage {
         if (dataMap == null) return;
         for (MilestoneData data : dataMap.values())
             save(data);
+    }
+
+    @Override
+    public PlayerRecord loadRecord(UUID uuid) {
+        return playerRecordDAO.findOne("uuid", uuid);
+    }
+
+    @Override
+    public void deleteRecord(UUID uuid) {
+        Query<PlayerRecord> query = playerRecordDAO.createQuery().field("uuid").equal(uuid);
+        playerRecordDAO.deleteByQuery(query);
+    }
+
+    @Override
+    public void saveRecord(PlayerRecord record) {
+        playerRecordDAO.save(record);
+    }
+
+    @Override
+    public void saveAllRecords(Map<UUID, PlayerRecord> dataMap) {
+        if (dataMap == null) return;
+        for (PlayerRecord data : dataMap.values())
+            saveRecord(data);
+    }
+
+    @Override
+    public Map<UUID, PlayerRecord> loadAllRecords() {
+        Map<UUID, PlayerRecord> dataMap = new HashMap<>();
+        for (PlayerRecord data : playerRecordDAO.find())
+            dataMap.put(data.getUuid(), data);
+        return dataMap;
     }
 }

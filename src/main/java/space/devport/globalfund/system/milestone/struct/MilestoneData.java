@@ -1,11 +1,9 @@
-package space.devport.globalfund.system.struct;
+package space.devport.globalfund.system.milestone.struct;
 
 import lombok.*;
 import org.mongodb.morphia.annotations.*;
 import space.devport.globalfund.system.currency.CurrencyType;
-
-import java.util.HashMap;
-import java.util.Map;
+import space.devport.globalfund.system.struct.CurrencyStorage;
 
 @Data
 @AllArgsConstructor
@@ -25,37 +23,33 @@ public class MilestoneData {
     @Getter
     @Setter
     @Embedded
-    private Map<CurrencyType, Double> currency = new HashMap<>();
+    private CurrencyStorage currencyStorage = new CurrencyStorage();
 
     public MilestoneData(String name) {
         this.name = name;
     }
 
     public void add(CurrencyType type, double amount) {
-        amount = currency.containsKey(type) ? amount + currency.get(type) : amount;
-        currency.put(type, Math.max(0, amount));
+        currencyStorage.add(type, amount);
     }
 
     public void set(CurrencyType type, double amount) {
-        currency.put(type, amount);
+        currencyStorage.set(type, amount);
     }
 
     public void remove(CurrencyType type, double amount) {
-        amount = getCurrencyAmount(type) - amount;
-        if (amount > 0)
-            currency.put(type, amount);
-        else currency.remove(type);
+        currencyStorage.remove(type, amount);
     }
 
     public void clear(CurrencyType type) {
-        currency.remove(type);
+        currencyStorage.clear(type);
     }
 
     public void clearAll() {
-        currency.clear();
+        currencyStorage.clear();
     }
 
     public double getCurrencyAmount(CurrencyType type) {
-        return currency.containsKey(type) ? currency.get(type) : 0;
+        return currencyStorage.get(type);
     }
 }

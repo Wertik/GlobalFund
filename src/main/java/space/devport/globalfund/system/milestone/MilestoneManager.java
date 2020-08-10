@@ -1,4 +1,4 @@
-package space.devport.globalfund.system;
+package space.devport.globalfund.system.milestone;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,11 +7,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.system.currency.CurrencyType;
-import space.devport.globalfund.system.storage.MilestoneStorage;
-import space.devport.globalfund.system.struct.MilestoneData;
-import space.devport.globalfund.system.struct.MilestonePreset;
-import space.devport.globalfund.system.struct.MilestoneRequirements;
-import space.devport.globalfund.system.struct.MilestoneRewards;
+import space.devport.globalfund.system.milestone.storage.MilestoneStorage;
+import space.devport.globalfund.system.milestone.struct.MilestoneData;
+import space.devport.globalfund.system.milestone.struct.MilestonePreset;
+import space.devport.globalfund.system.milestone.struct.MilestoneRequirements;
+import space.devport.globalfund.system.milestone.struct.MilestoneRewards;
 import space.devport.utils.configuration.Configuration;
 
 import java.util.Arrays;
@@ -127,6 +127,9 @@ public class MilestoneManager {
         return true;
     }
 
+    /**
+     * Add Currency to the active milestone.
+     */
     public boolean add(CurrencyType type, double amount) {
         MilestoneData data = getData(activeMilestone);
         if (data == null) return false;
@@ -147,6 +150,9 @@ public class MilestoneManager {
         return true;
     }
 
+    /**
+     * Make a deposit for a player.
+     */
     public boolean deposit(Player player, CurrencyType type, double amount) {
 
         amount = Math.min(amount, getRemaining(type));
@@ -155,6 +161,10 @@ public class MilestoneManager {
 
         add(type, amount);
         checkGoals(player);
+
+        // Add to players donation log
+        plugin.getRecordManager().getRecord(player).addDonate(activeMilestone, type, amount);
+
         return true;
     }
 

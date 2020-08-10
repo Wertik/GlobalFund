@@ -1,8 +1,8 @@
-package space.devport.globalfund.system.storage;
+package space.devport.globalfund.system.milestone.storage;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import space.devport.globalfund.system.struct.MilestoneData;
+import space.devport.globalfund.system.milestone.struct.MilestoneData;
 
 import java.util.Map;
 
@@ -11,9 +11,6 @@ public interface MilestoneStorage {
     void delete(@Nullable String name);
 
     void clear();
-
-    @Nullable
-    MilestoneData load(@Nullable String name);
 
     void save(@Nullable MilestoneData data);
 

@@ -4,7 +4,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.commands.CommandUtils;
-import space.devport.globalfund.system.currency.CurrencyType;
 import space.devport.utils.commands.SubCommand;
 import space.devport.utils.commands.struct.ArgumentRange;
 import space.devport.utils.commands.struct.CommandResult;
@@ -25,10 +24,7 @@ public class Reset extends SubCommand {
     protected CommandResult perform(CommandSender sender, String label, String[] args) {
         if (!CommandUtils.checkActiveGoal(sender)) return CommandResult.FAILURE;
 
-        for (CurrencyType type : CurrencyType.values()) {
-            plugin.getMilestoneManager().getActiveData().clear(type);
-        }
-
+        plugin.getMilestoneManager().getActiveData().clearAll();
         plugin.getMilestoneManager().getActiveData().setCompleted(false);
 
         language.sendPrefixed(sender, "Reset");
