@@ -38,7 +38,7 @@ public class Deposit extends SubCommand {
         if (!CommandUtils.checkActiveGoal(sender)) return CommandResult.FAILURE;
 
         CurrencyType currencyType = CommandUtils.checkCurrency(sender, args[0]);
-        if (currencyType == null || CommandUtils.checkComplete(sender, currencyType)) return CommandResult.FAILURE;
+        if (currencyType == null || !CommandUtils.checkProvider(sender, currencyType) || CommandUtils.checkComplete(sender, currencyType)) return CommandResult.FAILURE;
 
         double amount = CommandUtils.checkAmount(sender, args[1]);
         if (amount == -1) return CommandResult.FAILURE;

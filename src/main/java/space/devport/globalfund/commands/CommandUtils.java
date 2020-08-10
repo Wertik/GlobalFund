@@ -9,6 +9,15 @@ import space.devport.globalfund.system.milestone.struct.MilestonePreset;
 
 @UtilityClass
 public class CommandUtils {
+
+    public boolean checkProvider(CommandSender sender, CurrencyType type) {
+        if (!type.hasProvider()) {
+            GlobalFundPlugin.getInstance().getLanguageManager().sendPrefixed(sender, "No-Provider");
+            return false;
+        }
+        return true;
+    }
+
     public CurrencyType checkCurrency(CommandSender sender, String arg) {
         CurrencyType currencyType = CurrencyType.fromString(arg);
         if (currencyType == null) {

@@ -105,6 +105,10 @@ public class GlobalFundPlugin extends DevportPlugin {
         recordManager.saveData();
         milestoneManager.saveData();
 
+        consoleOutput.debug("Looking for deps..");
+        for (CurrencyType type : CurrencyType.values())
+            type.getProvider().onLoad();
+
         setupPlaceholderAPI();
     }
 

@@ -6,6 +6,8 @@ public class GlobalFundLanguage extends LanguageDefaults {
 
     @Override
     public void setDefaults() {
+        addDefault("No-Provider", "&cThis currency has no provider initialized. Inform the admin.");
+
         addDefault("Status.Header", "&8&m    &f Milestone: &r%milestoneDisplay%", "&7Completed: &r%completed%");
         addDefault("Status.Currency-Line", "&7%currencyName% &8- &e%currencyActual% &7/ &f%currencyGoal%");
         addDefault("Status.Footer", "&8&m        ");
