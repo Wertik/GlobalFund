@@ -4,24 +4,23 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.commands.CommandUtils;
-import space.devport.utils.commands.SubCommand;
-import space.devport.utils.commands.struct.ArgumentRange;
-import space.devport.utils.commands.struct.CommandResult;
-import space.devport.utils.commands.struct.Preconditions;
+import space.devport.dock.commands.SubCommand;
+import space.devport.dock.commands.struct.ArgumentRange;
+import space.devport.dock.commands.struct.CommandResult;
 
 public class Complete extends SubCommand {
 
     private final GlobalFundPlugin plugin;
 
-    public Complete() {
-        super("complete");
-        this.plugin = GlobalFundPlugin.getInstance();
+    public Complete(GlobalFundPlugin plugin) {
+        super(plugin, "complete");
+        this.plugin = plugin;
 
-        this.preconditions = new Preconditions().permissions("globalfund.admin");
+        setPermissions("globalfund.admin");
     }
 
     @Override
-    protected CommandResult perform(CommandSender sender, String label, String[] args) {
+    protected @NotNull CommandResult perform(@NotNull CommandSender sender, @NotNull String label, String[] args) {
         if (!CommandUtils.checkActiveGoal(sender)) return CommandResult.FAILURE;
 
         if (CommandUtils.checkComplete(sender, null)) return CommandResult.FAILURE;

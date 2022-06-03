@@ -11,7 +11,7 @@ import space.devport.globalfund.record.struct.PlayerRecord;
 import space.devport.globalfund.system.currency.CurrencyType;
 import space.devport.globalfund.system.milestone.storage.MilestoneStorage;
 import space.devport.globalfund.system.milestone.struct.MilestoneData;
-import space.devport.utils.configuration.Configuration;
+import space.devport.dock.configuration.Configuration;
 
 import java.util.HashMap;
 import java.util.Map;

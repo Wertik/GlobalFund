@@ -1,6 +1,7 @@
 package space.devport.globalfund.system.storage;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,10 @@ import space.devport.globalfund.system.milestone.storage.MilestoneStorage;
 import space.devport.globalfund.system.milestone.storage.dao.MilestoneDataDAO;
 import space.devport.globalfund.system.milestone.struct.MilestoneData;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class MongoStorage implements MilestoneStorage, RecordStorage {
 
@@ -38,12 +42,20 @@ public class MongoStorage implements MilestoneStorage, RecordStorage {
 
         MongoClient mongoClient;
         if (plugin.getConfig().getBoolean("storage.mongo.use-credentials")) {
-            mongoClient = new MongoClient(address, Collections.singletonList(
-                    MongoCredential.createScramSha1Credential(plugin.getConfig().getString("storage.mongo.user"),
-                            Objects.requireNonNull(plugin.getConfig().getString("storage.mongo.auth-db", "admin")),
-                            plugin.getConfig().getString("storage.mongo.pass").toCharArray())));
-        } else
+            String user = plugin.getConfig().getString("storage.mongo.user");
+            String authDB = plugin.getConfig().getString("storage.mongo.auth-db", "admin");
+            String pass = plugin.getConfig().getString("storage.mongo.pass");
+
+            Objects.requireNonNull(user, "You have to provide a MongoDB user.");
+            Objects.requireNonNull(authDB, "You have to provide a MongoDB auth database.");
+            Objects.requireNonNull(pass, "You have to provide a MongoDB password.");
+
+            mongoClient = new MongoClient(address,
+                    MongoCredential.createScramSha1Credential(user, authDB, pass.toCharArray()),
+                    MongoClientOptions.builder().build());
+        } else {
             mongoClient = new MongoClient(address);
+        }
 
         Morphia morphia = new Morphia();
 
@@ -59,6 +71,7 @@ public class MongoStorage implements MilestoneStorage, RecordStorage {
         Query<MilestoneData> query = milestoneDataDAO.createQuery().field("name").equal(name);
         milestoneDataDAO.deleteByQuery(query);
     }
+
     @Override
     public void clear() {
         milestoneDataDAO.getCollection().drop();

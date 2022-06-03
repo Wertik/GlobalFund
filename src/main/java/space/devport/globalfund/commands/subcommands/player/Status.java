@@ -2,25 +2,25 @@ package space.devport.globalfund.commands.subcommands.player;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import space.devport.dock.commands.SubCommand;
+import space.devport.dock.commands.struct.ArgumentRange;
+import space.devport.dock.commands.struct.CommandResult;
+import space.devport.dock.text.message.Message;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.commands.CommandUtils;
 import space.devport.globalfund.system.currency.CurrencyType;
-import space.devport.utils.commands.SubCommand;
-import space.devport.utils.commands.struct.ArgumentRange;
-import space.devport.utils.commands.struct.CommandResult;
-import space.devport.utils.text.message.Message;
 
 public class Status extends SubCommand {
 
     private final GlobalFundPlugin plugin;
 
-    public Status() {
-        super("status");
-        this.plugin = GlobalFundPlugin.getInstance();
+    public Status(GlobalFundPlugin plugin) {
+        super(plugin, "status");
+        this.plugin = plugin;
     }
 
     @Override
-    protected CommandResult perform(CommandSender sender, String label, String[] args) {
+    protected @NotNull CommandResult perform(@NotNull CommandSender sender, @NotNull String label, String[] args) {
 
         if (!CommandUtils.checkActiveGoal(sender)) return CommandResult.FAILURE;
 

@@ -1,21 +1,21 @@
 package space.devport.globalfund;
 
 import lombok.Getter;
+import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
+import space.devport.dock.DockedPlugin;
+import space.devport.dock.UsageFlag;
+import space.devport.dock.configuration.Configuration;
 import space.devport.globalfund.commands.GlobalFundCommand;
-import space.devport.globalfund.commands.subcommands.admin.*;
-import space.devport.globalfund.commands.subcommands.player.Deposit;
-import space.devport.globalfund.commands.subcommands.player.Donated;
-import space.devport.globalfund.commands.subcommands.player.Status;
+import space.devport.globalfund.listeners.PlayerListener;
 import space.devport.globalfund.record.RecordManager;
 import space.devport.globalfund.system.currency.CurrencyType;
 import space.devport.globalfund.system.milestone.MilestoneManager;
 import space.devport.globalfund.system.storage.FileStorage;
 import space.devport.globalfund.system.storage.MongoStorage;
-import space.devport.utils.DevportPlugin;
-import space.devport.utils.configuration.Configuration;
 
-public class GlobalFundPlugin extends DevportPlugin {
+@Log
+public class GlobalFundPlugin extends DockedPlugin {
 
     @Getter
     private static GlobalFundPlugin instance;
@@ -31,38 +31,30 @@ public class GlobalFundPlugin extends DevportPlugin {
 
     @Override
     public void onPluginEnable() {
-        instance = this;
-        setInstance(this);
+        GlobalFundPlugin.instance = this;
 
-        data = new Configuration(this, "data");
+        this.data = new Configuration(this, "data");
 
-        new GlobalFundLanguage();
+        new GlobalFundLanguage(this).register();
 
-        milestoneManager = new MilestoneManager();
+        this.milestoneManager = new MilestoneManager();
         milestoneManager.loadPresets();
 
-        recordManager = new RecordManager();
+        this.recordManager = new RecordManager();
 
         initStorage();
+
         milestoneManager.loadData();
         recordManager.loadData();
 
         setupPlaceholderAPI();
 
-        addMainCommand(new GlobalFundCommand())
-                .addSubCommand(new Deposit())
-                .addSubCommand(new Reload())
-                .addSubCommand(new Complete())
-                .addSubCommand(new Add())
-                .addSubCommand(new Reset())
-                .addSubCommand(new SetActive())
-                .addSubCommand(new Remove())
-                .addSubCommand(new Status())
-                .addSubCommand(new Donated());
+        registerMainCommand(new GlobalFundCommand(this));
+        registerListener(new PlayerListener(this));
 
         // Check Currency providers after everything is loaded.
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            consoleOutput.debug("Looking for deps..");
+            log.fine("Looking for deps..");
             for (CurrencyType type : CurrencyType.values())
                 type.getProvider().onLoad();
         }, 1L);
@@ -86,7 +78,7 @@ public class GlobalFundPlugin extends DevportPlugin {
                 recordManager.setStorage(fileStorage);
                 break;
         }
-        consoleOutput.info("Using " + type + " storage.");
+        log.info("Using " + type + " storage.");
     }
 
     @Override
@@ -107,7 +99,7 @@ public class GlobalFundPlugin extends DevportPlugin {
         recordManager.saveData();
         milestoneManager.saveData();
 
-        consoleOutput.debug("Looking for deps..");
+        log.fine("Looking for deps..");
         for (CurrencyType type : CurrencyType.values())
             type.getProvider().onLoad();
 
@@ -115,24 +107,14 @@ public class GlobalFundPlugin extends DevportPlugin {
     }
 
     @Override
-    public boolean useLanguage() {
-        return true;
-    }
-
-    @Override
-    public boolean useHolograms() {
-        return false;
-    }
-
-    @Override
-    public boolean useMenus() {
-        return false;
+    public UsageFlag[] usageFlags() {
+        return new UsageFlag[0];
     }
 
     private void setupPlaceholderAPI() {
         if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            consoleOutput.info("Found PAPI! &aRegistering our expansion..");
-            new GlobalFundExpansion().register();
+            log.info("Found PAPI! &aRegistering our expansion..");
+            new GlobalFundExpansion(this).register();
         }
     }
 }

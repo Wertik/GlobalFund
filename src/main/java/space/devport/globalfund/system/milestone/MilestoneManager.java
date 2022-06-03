@@ -2,10 +2,12 @@ package space.devport.globalfund.system.milestone;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
+import space.devport.dock.configuration.Configuration;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.system.currency.CurrencyType;
 import space.devport.globalfund.system.milestone.storage.MilestoneStorage;
@@ -13,12 +15,12 @@ import space.devport.globalfund.system.milestone.struct.MilestoneData;
 import space.devport.globalfund.system.milestone.struct.MilestonePreset;
 import space.devport.globalfund.system.milestone.struct.MilestoneRequirements;
 import space.devport.globalfund.system.milestone.struct.MilestoneRewards;
-import space.devport.utils.configuration.Configuration;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log
 public class MilestoneManager {
 
     private final GlobalFundPlugin plugin;
@@ -75,20 +77,20 @@ public class MilestoneManager {
             milestonePresets.put(key, preset);
         }
 
-        plugin.getConsoleOutput().info("Loaded " + milestonePresets.size() + " milestone preset(s)...");
+        log.info("Loaded " + milestonePresets.size() + " milestone preset(s)...");
     }
 
     public void loadData() {
         if (storage == null) return;
         milestoneData.clear();
         milestoneData.putAll(storage.loadAll());
-        plugin.getConsoleOutput().info("Loaded " + milestoneData.size() + " milestone data set(s)...");
+        log.info("Loaded " + milestoneData.size() + " milestone data set(s)...");
 
         Configuration data = new Configuration(plugin, "data");
         activeMilestone = data.getFileConfiguration().getString("active-milestone");
 
         if (!milestonePresets.containsKey(activeMilestone))
-            plugin.getConsoleOutput().warn("Active milestone that was set no longer exists.");
+            log.warning("Active milestone that was set no longer exists.");
     }
 
     public void saveData() {
@@ -97,8 +99,7 @@ public class MilestoneManager {
         try {
             storage.saveAll(milestoneData);
         } catch (NotImplementedException e) {
-            if (plugin.getConsoleOutput().isDebug())
-                e.printStackTrace();
+            e.printStackTrace();
         }
 
         Configuration data = new Configuration(plugin, "data");

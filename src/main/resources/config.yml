@@ -2,7 +2,8 @@
 #
 # Version: ${project.version}
 
-debug-enabled: true
+# FINE, INFO, SEVERE, WARNING
+log-level: INFO
 plugin-prefix: '&6Global Fund &8>> '
 
 # There will always be a data file to store the currently active milestone, as it's a lot easier to store in a yaml.

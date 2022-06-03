@@ -2,8 +2,8 @@ package space.devport.globalfund.system.milestone.struct;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import space.devport.globalfund.GlobalFundPlugin;
-import space.devport.utils.struct.Rewards;
+import space.devport.dock.struct.Rewards;
+import space.devport.dock.text.language.LanguageManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class MilestoneRewards extends Rewards {
     @Override
     public void give(Player player) {
         if (player == null)
-            getPlaceholders().add("%player%", GlobalFundPlugin.getInstance().getLanguageManager().get("Broadcast-When-System").color().toString());
+            getPlaceholders().add("%player%", getPlugin().getManager(LanguageManager.class).get("Broadcast-When-System").color().toString());
         super.give(player);
 
         for (Player loopPlayer : Bukkit.getOnlinePlayers()) {

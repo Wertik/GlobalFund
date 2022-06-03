@@ -1,21 +1,22 @@
 package space.devport.globalfund.commands;
 
-import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import space.devport.utils.commands.MainCommand;
-import space.devport.utils.commands.struct.CommandResult;
-import space.devport.utils.commands.struct.Preconditions;
+import space.devport.dock.commands.MainCommand;
+import space.devport.globalfund.GlobalFundPlugin;
+import space.devport.globalfund.commands.subcommands.admin.*;
 
 public class GlobalFundCommand extends MainCommand {
 
-    public GlobalFundCommand() {
-        super("globalfund");
-        this.preconditions = new Preconditions().permissions("globalfund.commands");
-    }
+    public GlobalFundCommand(GlobalFundPlugin plugin) {
+        super(plugin, "globalfund");
+        craftPermission();
 
-    @Override
-    protected CommandResult perform(CommandSender sender, String label, String[] args) {
-        return super.perform(sender, label, args);
+        withSubCommand(new Add(plugin));
+        withSubCommand(new Complete(plugin));
+        withSubCommand(new Reload(plugin));
+        withSubCommand(new Remove(plugin));
+        withSubCommand(new Reset(plugin));
+        withSubCommand(new SetActive(plugin));
     }
 
     @Override

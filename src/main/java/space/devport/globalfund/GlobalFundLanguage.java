@@ -1,8 +1,13 @@
 package space.devport.globalfund;
 
-import space.devport.utils.text.language.LanguageDefaults;
+import space.devport.dock.api.IDockedPlugin;
+import space.devport.dock.text.language.LanguageDefaults;
 
 public class GlobalFundLanguage extends LanguageDefaults {
+
+    public GlobalFundLanguage(IDockedPlugin plugin) {
+        super(plugin);
+    }
 
     @Override
     public void setDefaults() {

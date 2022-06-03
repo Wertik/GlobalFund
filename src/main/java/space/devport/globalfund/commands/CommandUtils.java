@@ -2,6 +2,7 @@ package space.devport.globalfund.commands;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.command.CommandSender;
+import space.devport.dock.text.language.LanguageManager;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.system.currency.CurrencyType;
 import space.devport.globalfund.system.milestone.struct.MilestoneData;
@@ -12,7 +13,7 @@ public class CommandUtils {
 
     public boolean checkProvider(CommandSender sender, CurrencyType type) {
         if (!type.hasProvider()) {
-            GlobalFundPlugin.getInstance().getLanguageManager().sendPrefixed(sender, "No-Provider");
+            GlobalFundPlugin.getInstance().getManager(LanguageManager.class).sendPrefixed(sender, "No-Provider");
             return false;
         }
         return true;
@@ -21,7 +22,7 @@ public class CommandUtils {
     public CurrencyType checkCurrency(CommandSender sender, String arg) {
         CurrencyType currencyType = CurrencyType.fromString(arg);
         if (currencyType == null) {
-            GlobalFundPlugin.getInstance().getLanguageManager()
+            GlobalFundPlugin.getInstance().getManager(LanguageManager.class)
                     .getPrefixed("Currency-Invalid")
                     .replace("%param%", arg)
                     .send(sender);
@@ -36,19 +37,19 @@ public class CommandUtils {
         if (data == null) return false;
 
         if (data.isCompleted()) {
-            GlobalFundPlugin.getInstance().getLanguageManager().sendPrefixed(sender, "Goal-Already-Reached");
+            GlobalFundPlugin.getInstance().getManager(LanguageManager.class).sendPrefixed(sender, "Goal-Already-Reached");
             return true;
         }
 
         if (type == null) {
             if (data.isCompleted()) {
-                GlobalFundPlugin.getInstance().getLanguageManager().sendPrefixed(sender, "Goal-Already-Reached");
+                GlobalFundPlugin.getInstance().getManager(LanguageManager.class).sendPrefixed(sender, "Goal-Already-Reached");
                 return true;
             }
         } else {
             MilestonePreset preset = GlobalFundPlugin.getInstance().getMilestoneManager().getActivePreset();
             if (preset != null && data.getCurrencyAmount(type) >= preset.getRequirements().get(type)) {
-                GlobalFundPlugin.getInstance().getLanguageManager().sendPrefixed(sender, "Goal-Already-Reached");
+                GlobalFundPlugin.getInstance().getManager(LanguageManager.class).sendPrefixed(sender, "Goal-Already-Reached");
                 return true;
             }
         }
@@ -60,7 +61,7 @@ public class CommandUtils {
         try {
             amount = Double.parseDouble(arg);
         } catch (NumberFormatException e) {
-            GlobalFundPlugin.getInstance().getLanguageManager()
+            GlobalFundPlugin.getInstance().getManager(LanguageManager.class)
                     .getPrefixed("Not-A-Number")
                     .replace("%param%", arg)
                     .send(sender);
@@ -68,7 +69,7 @@ public class CommandUtils {
         }
 
         if (amount <= 0) {
-            GlobalFundPlugin.getInstance().getLanguageManager()
+            GlobalFundPlugin.getInstance().getManager(LanguageManager.class)
                     .sendPrefixed(sender, "Cannot-Be-Negative");
             return -1;
         }
@@ -78,7 +79,7 @@ public class CommandUtils {
 
     public boolean checkActiveGoal(CommandSender sender) {
         if (GlobalFundPlugin.getInstance().getMilestoneManager().getActivePreset() == null) {
-            GlobalFundPlugin.getInstance().getLanguageManager().sendPrefixed(sender, "No-Active-Goal");
+            GlobalFundPlugin.getInstance().getManager(LanguageManager.class).sendPrefixed(sender, "No-Active-Goal");
             return false;
         } else return true;
     }

@@ -1,10 +1,12 @@
 package space.devport.globalfund.system.currency.provider;
 
+import lombok.extern.java.Log;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import space.devport.globalfund.GlobalFundPlugin;
 
+@Log
 public class VaultProvider implements CurrencyProvider {
 
     private static Economy economy = null;
@@ -28,7 +30,7 @@ public class VaultProvider implements CurrencyProvider {
         }
 
         economy = rsp.getProvider();
-        GlobalFundPlugin.getInstance().getConsoleOutput().info("Vault registered as a Currency provider!");
+        log.info("Vault registered as a Currency provider!");
     }
 
     @Override

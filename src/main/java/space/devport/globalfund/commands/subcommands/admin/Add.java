@@ -2,13 +2,12 @@ package space.devport.globalfund.commands.subcommands.admin;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import space.devport.dock.commands.SubCommand;
+import space.devport.dock.commands.struct.ArgumentRange;
+import space.devport.dock.commands.struct.CommandResult;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.commands.CommandUtils;
 import space.devport.globalfund.system.currency.CurrencyType;
-import space.devport.utils.commands.SubCommand;
-import space.devport.utils.commands.struct.ArgumentRange;
-import space.devport.utils.commands.struct.CommandResult;
-import space.devport.utils.commands.struct.Preconditions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,15 +18,15 @@ public class Add extends SubCommand {
 
     private final GlobalFundPlugin plugin;
 
-    public Add() {
-        super("add");
-        this.plugin = GlobalFundPlugin.getInstance();
+    public Add(GlobalFundPlugin plugin) {
+        super(plugin, "add");
+        this.plugin = plugin;
 
-        this.preconditions = new Preconditions().permissions("globalfund.admin");
+        setPermissions("globalfund.admin");
     }
 
     @Override
-    protected CommandResult perform(CommandSender sender, String label, String[] args) {
+    protected @NotNull CommandResult perform(@NotNull CommandSender sender, @NotNull String label, String[] args) {
 
         if (!CommandUtils.checkActiveGoal(sender)) return CommandResult.FAILURE;
 
@@ -48,7 +47,7 @@ public class Add extends SubCommand {
     }
 
     @Override
-    public List<String> requestTabComplete(CommandSender sender, String[] args) {
+    public List<String> requestTabComplete(@NotNull CommandSender sender, String[] args) {
         List<String> suggestions = new ArrayList<>();
 
         if (args.length == 0)

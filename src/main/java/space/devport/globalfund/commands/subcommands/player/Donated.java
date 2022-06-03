@@ -3,30 +3,29 @@ package space.devport.globalfund.commands.subcommands.player;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import space.devport.dock.commands.SubCommand;
+import space.devport.dock.commands.struct.ArgumentRange;
+import space.devport.dock.commands.struct.CommandResult;
+import space.devport.dock.text.message.Message;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.record.struct.PlayerRecord;
 import space.devport.globalfund.system.currency.CurrencyType;
 import space.devport.globalfund.system.struct.CurrencyStorage;
-import space.devport.utils.commands.SubCommand;
-import space.devport.utils.commands.struct.ArgumentRange;
-import space.devport.utils.commands.struct.CommandResult;
-import space.devport.utils.commands.struct.Preconditions;
-import space.devport.utils.text.message.Message;
 
 import java.util.Map;
 
 public class Donated extends SubCommand {
 
-    public Donated() {
-        super("donated");
+    public Donated(GlobalFundPlugin plugin) {
+        super(plugin, "donated");
 
-        this.preconditions = new Preconditions()
+        getPreconditions()
                 .permissions("globalfund.donated")
                 .playerOnly();
     }
 
     @Override
-    protected CommandResult perform(CommandSender sender, String label, String[] args) {
+    protected @NotNull CommandResult perform(@NotNull CommandSender sender, @NotNull String label, String[] args) {
         Player player = (Player) sender;
 
         PlayerRecord record = GlobalFundPlugin.getInstance().getRecordManager().getRecord(player);

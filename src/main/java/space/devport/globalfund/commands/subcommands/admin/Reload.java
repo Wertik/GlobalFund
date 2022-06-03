@@ -2,22 +2,21 @@ package space.devport.globalfund.commands.subcommands.admin;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import space.devport.dock.commands.SubCommand;
+import space.devport.dock.commands.struct.ArgumentRange;
+import space.devport.dock.commands.struct.CommandResult;
 import space.devport.globalfund.GlobalFundPlugin;
-import space.devport.utils.commands.SubCommand;
-import space.devport.utils.commands.struct.ArgumentRange;
-import space.devport.utils.commands.struct.CommandResult;
-import space.devport.utils.commands.struct.Preconditions;
 
 public class Reload extends SubCommand {
 
-    public Reload() {
-        super("reload");
-        this.preconditions = new Preconditions().permissions("globalfund.admin");
+    public Reload(GlobalFundPlugin plugin) {
+        super(plugin, "reload");
+        setPermissions("globalfund.admin");
     }
 
     @Override
-    protected CommandResult perform(CommandSender sender, String label, String[] args) {
-        GlobalFundPlugin.getInstance().reload(sender);
+    protected @NotNull CommandResult perform(@NotNull CommandSender sender, @NotNull String label, String[] args) {
+        this.plugin.reload(sender);
         return CommandResult.SUCCESS;
     }
 

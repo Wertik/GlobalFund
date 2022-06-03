@@ -1,13 +1,13 @@
 package space.devport.globalfund.record;
 
 import lombok.Setter;
+import lombok.extern.java.Log;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.record.storage.RecordStorage;
 import space.devport.globalfund.record.struct.PlayerRecord;
 
@@ -15,9 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Log
 public class RecordManager {
-
-    private final GlobalFundPlugin plugin;
 
     @Setter
     private RecordStorage storage;
@@ -25,7 +24,6 @@ public class RecordManager {
     private final Map<UUID, PlayerRecord> records = new HashMap<>();
 
     public RecordManager() {
-        plugin = GlobalFundPlugin.getInstance();
     }
 
     public void saveData() {
@@ -33,8 +31,7 @@ public class RecordManager {
         try {
             storage.saveAllRecords(records);
         } catch (NotImplementedException e) {
-            if (plugin.getConsoleOutput().isDebug())
-                e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -44,7 +41,7 @@ public class RecordManager {
 
         loadOnline();
 
-        plugin.getConsoleOutput().info("Loaded " + records.size() + " milestone data set(s)...");
+        log.info("Loaded " + records.size() + " milestone data set(s)...");
     }
 
     @NotNull

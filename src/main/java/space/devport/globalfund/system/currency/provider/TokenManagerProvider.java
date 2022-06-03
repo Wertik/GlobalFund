@@ -1,17 +1,19 @@
 package space.devport.globalfund.system.currency.provider;
 
 import lombok.NoArgsConstructor;
+import lombok.extern.java.Log;
 import me.realized.tokenmanager.TokenManagerPlugin;
 import org.bukkit.entity.Player;
 import space.devport.globalfund.GlobalFundPlugin;
 
+@Log
 @NoArgsConstructor
 public class TokenManagerProvider implements CurrencyProvider {
 
     @Override
     public void onLoad() {
         if (GlobalFundPlugin.getInstance().getServer().getPluginManager().getPlugin("TokenManager") != null)
-            GlobalFundPlugin.getInstance().getConsoleOutput().info("TokenManager registered as a Currency provider!");
+            log.info("TokenManager registered as a Currency provider!");
     }
 
     @Override

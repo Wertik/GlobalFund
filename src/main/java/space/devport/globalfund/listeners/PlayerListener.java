@@ -7,8 +7,14 @@ import space.devport.globalfund.GlobalFundPlugin;
 
 public class PlayerListener implements Listener {
 
+    private final GlobalFundPlugin plugin;
+
+    public PlayerListener(GlobalFundPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        GlobalFundPlugin.getInstance().getRecordManager().unloadRecord(event.getPlayer().getUniqueId());
+        this.plugin.getRecordManager().unloadRecord(event.getPlayer().getUniqueId());
     }
 }

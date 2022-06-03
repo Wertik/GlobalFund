@@ -2,26 +2,25 @@ package space.devport.globalfund.commands.subcommands.admin;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import space.devport.dock.commands.SubCommand;
+import space.devport.dock.commands.struct.ArgumentRange;
+import space.devport.dock.commands.struct.CommandResult;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.commands.CommandUtils;
-import space.devport.utils.commands.SubCommand;
-import space.devport.utils.commands.struct.ArgumentRange;
-import space.devport.utils.commands.struct.CommandResult;
-import space.devport.utils.commands.struct.Preconditions;
 
 public class Reset extends SubCommand {
 
     private final GlobalFundPlugin plugin;
 
-    public Reset() {
-        super("reset");
-        this.plugin = GlobalFundPlugin.getInstance();
+    public Reset(GlobalFundPlugin plugin) {
+        super(plugin, "reset");
+        this.plugin = plugin;
 
-        this.preconditions = new Preconditions().permissions("globalfund.admin");
+        setPermissions("globalfund.admin");
     }
 
     @Override
-    protected CommandResult perform(CommandSender sender, String label, String[] args) {
+    protected @NotNull CommandResult perform(@NotNull CommandSender sender, @NotNull String label, String[] args) {
         if (!CommandUtils.checkActiveGoal(sender)) return CommandResult.FAILURE;
 
         plugin.getMilestoneManager().getActiveData().clearAll();

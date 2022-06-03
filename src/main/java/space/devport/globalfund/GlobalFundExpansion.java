@@ -2,11 +2,12 @@ package space.devport.globalfund;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import space.devport.dock.text.language.LanguageManager;
+import space.devport.dock.util.StringUtil;
 import space.devport.globalfund.system.currency.CurrencyType;
 import space.devport.globalfund.system.milestone.struct.MilestoneData;
 import space.devport.globalfund.system.milestone.struct.MilestonePreset;
-import space.devport.utils.text.StringUtil;
-import space.devport.utils.text.language.LanguageManager;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -16,9 +17,9 @@ public class GlobalFundExpansion extends PlaceholderExpansion {
     private final GlobalFundPlugin plugin;
     private final LanguageManager language;
 
-    public GlobalFundExpansion() {
-        this.plugin = GlobalFundPlugin.getInstance();
-        this.language = plugin.getLanguageManager();
+    public GlobalFundExpansion(GlobalFundPlugin plugin) {
+        this.plugin = plugin;
+        this.language = plugin.getManager(LanguageManager.class);
     }
 
     /*
@@ -77,17 +78,17 @@ public class GlobalFundExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String getIdentifier() {
+    public @NotNull String getIdentifier() {
         return "globalfund";
     }
 
     @Override
-    public String getAuthor() {
+    public @NotNull String getAuthor() {
         return String.join(", ", plugin.getDescription().getAuthors());
     }
 
     @Override
-    public String getVersion() {
+    public @NotNull String getVersion() {
         return plugin.getDescription().getVersion();
     }
 

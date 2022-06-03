@@ -3,6 +3,7 @@ package space.devport.globalfund.system.currency;
 import com.google.common.base.Strings;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
+import space.devport.dock.text.language.LanguageManager;
 import space.devport.globalfund.GlobalFundPlugin;
 import space.devport.globalfund.system.currency.provider.CurrencyProvider;
 import space.devport.globalfund.system.currency.provider.TokenManagerProvider;
@@ -37,6 +38,6 @@ public enum CurrencyType {
     }
 
     public String getName() {
-        return GlobalFundPlugin.getInstance().getLanguageManager().get("Currency." + toString()).color().toString();
+        return GlobalFundPlugin.getInstance().getManager(LanguageManager.class).get("Currency." + this).color().toString();
     }
 }
